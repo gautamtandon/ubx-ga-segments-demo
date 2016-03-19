@@ -70,6 +70,43 @@ function ubx_ellipsis_ga_add_segment($name, $definition) {
 	$resp = curl_exec($ch);
 }
 
+function ubx_ellipsis_get_jobs() {
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, "https://api-01.ubx.ibmmarketingcloud.com/v1/jobs/SEGMENT_EXPORT?endpointId=12481&status=WAITING_TO_RECIEVE_DATA");
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer c950658d-6c2e-4c71-8585-f0b87c75ddb6", "Content-Type: application/json"));
+        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	$resp = curl_exec($ch);
+	return json_decode($resp, true);
+}
+
+function ubx_ellipsis_push_data($job) {
+	//echo json_encode($job) . "\n\n";
+	$data = array(
+		"endpointID" => $job['producerEndpointID'],
+		"segmentID" => $job['producerSegmentID'],
+		"destinationEndpointID" => $job['destinationEndpointID'],
+		"destinationSegmentName" => $job['destinationSegmentName'],
+		"attributeMappings" => $job['attributeMappings'],
+		"identityMappings" => $job['identityMappings']
+	);
+	//echo json_encode($data) . "\n\n";
+	$ch = curl_init();
+	curl_setopt($ch, CURLOPT_URL, "https://api-01.ubx.ibmmarketingcloud.com/v1/jobs/".$job['jobId']."/data");
+	curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer shiro-062c516b-1bce-4503-a4ef-80e37696bf25", "Content-Type: application/json"));
+	//curl_setopt($ch, CURLOPT_HTTPHEADER, array("Authorization: Bearer c950658d-6c2e-4c71-8585-f0b87c75ddb6", "Content-Type: application/json"));
+	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+	//curl_setopt($ch, CURLOPT_VERBOSE, 1);
+	//curl_setopt($ch, CURLOPT_HEADER, 1);
+	curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($data));
+	$resp = curl_exec($ch);
+
+//$header_size = curl_getinfo($ch, CURLINFO_HEADER_SIZE);
+//$header = substr($resp, 0, $header_size);
+//$resp = substr($resp, $header_size);
+
+	//echo $resp;
+}
+
 echo "Getting latest segments from Google Analytics...\n";
 $ga_segments = get_ga_segments();
 
@@ -107,5 +144,11 @@ foreach ($ga_segments as $ga_seg) {
 			ubx_ellipsis_ga_add_segment($ga_seg['name'], $ga_seg['definition']);
 		}
 	}
+}
+
+echo "Getting pending jobs...";
+$jobs_json = ubx_ellipsis_get_jobs();
+foreach ($jobs_json as $job) {
+	ubx_ellipsis_push_data($job);
 }
 ?>

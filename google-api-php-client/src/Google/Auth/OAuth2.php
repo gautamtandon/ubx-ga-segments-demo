@@ -338,6 +338,9 @@ class Google_Auth_OAuth2 extends Google_Auth_Abstract
 
     $code = $request->getResponseHttpCode();
     $body = $request->getResponseBody();
+    // GT hack
+    // print body
+    //echo "\n\n" . $body . "\n\n";
     if (200 == $code) {
       $token = json_decode($body, true);
       if ($token == null) {

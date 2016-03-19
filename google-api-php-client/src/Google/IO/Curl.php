@@ -99,6 +99,12 @@ class Google_IO_Curl extends Google_IO_Abstract
         )
     );
 
+    // GT hack
+    // ignore host certificate
+    //curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    // verbose mode
+    //curl_setopt($curl, CURLOPT_VERBOSE, 1);
+
     $response = curl_exec($curl);
     if ($response === false) {
       $error = curl_error($curl);
