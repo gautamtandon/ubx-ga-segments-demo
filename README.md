@@ -21,13 +21,13 @@ In "IBM language", this is a "push type segment" connector. Which means, it push
 2. Create a 'Segments Push Type' Custom Endpoint in UBX. Keep in mind if you are creating a custom endpoint for the first time, you might need to get your company provisioned into the IBM UBX system.
 3. Edit the "ellipsis-google.php" file and set the following global variables with the right values.
 
-	$ga_appname = "";
-	$ga_p12_filepath = "";
-	$ga_devacct = "";
+    $ga_appname = "";
+    $ga_p12_filepath = "";
+    $ga_devacct = "";
 
-	$ubx_es_endpoint_id = 0;
-	$ubx_es_endpoint_key = "";
-	$ubx_shiro_key = ""
+    $ubx_es_endpoint_id = 0;
+    $ubx_es_endpoint_key = "";
+    $ubx_shiro_key = ""
 
 ### Usage
 Simply configure the script 'ellipsis-google.php' to be called every so often - perhaps as a cron job, and you are all set! Now create a segment in GA and go to your UBX console and refresh the segments, and you'll see it there!
