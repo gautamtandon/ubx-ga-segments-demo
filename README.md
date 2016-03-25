@@ -4,6 +4,8 @@ This connectors picks up custom segments created in Google Analytics and pushes 
 ### How it works
 In "IBM language", this is a "push type segment" connector. Which means, it pushes data to UBX instead of waiting for UBX to make a call. Because of that, you can simply run this connector via command line instead of having to setup a HTTP endpoint where IBM UBX could call. Having said that, based on your particular situation, you might need a "pull type" connector, which is going to be pretty similar except for the fact that instead of you running the connector every so often, you'd wait UBX to make a call and do the same stuff.
 
+Watch the video: https://raw.githubusercontent.com/gautamtandon/ubx-ga-segments-demo/master/ubx-ga-segments-demo.mp4
+
 #### This is how this connector works at a high level:
 1. Pulls custom segments from Google Analytics.
 2. Figures out which segments need to be pushed to UBX (i.e. ignore the ones that have already been pushed).
